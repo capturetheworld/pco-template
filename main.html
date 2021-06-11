@@ -1,0 +1,306 @@
+<!-- QUICK CUSTOMIZATION
+
+SET THE NAMES OF THE 'NOTE' COLUMNS BELOW (THESE ARE CASE SENSITIVE): -->
+{% assign notes_column_1_category = 'Director/TD' %}
+{% assign notes_column_2_category = 'Audio' %}
+{% assign notes_column_3_category = 'Computer Graphics' %}
+{% assign notes_column_4_category = 'Lighting' %}
+{% assign notes_column_5_category = 'Venues' %}
+
+<!-- SET WHICH TEAMS TO PRINT BELOW (THESE ARE CASE SENSITIVE): -->
+{% array crew_categories = "Service Host", "Production Directors", "Production Sunday" %}
+
+<!-- SET THE NAME OF THE REHEARSAL TIME TO PRINT ON CREW LIST (THIS IS CASE SENSITIVE): -->
+{% assign call_time_name = "CREW CALL/Tech Run"%}
+
+<!-- TO PRINT THE CREW LIST ON A SEPERATE SHEET, SET TO TRUE: -->
+{% assign crew_page_break = true %}
+
+
+
+<!-- INTERNAL CODE, DO NOT ADJUST. -->
+{% for item in plan.items %}{% for item_time in item.times %}{% if forloop.length == 1 %} {% assign time_font_size = '12pt'%} {% elsif forloop.length == 2 %} {% assign time_font_size = '10pt'%}{% elsif forloop.length > 2 %} {% assign time_font_size = '8pt'%} {% endif %} {% endfor %}{% endfor %}
+
+
+<html>
+  <head>
+    <title>  {{report.title}}{{ plan.ministry.name }} - {{ plan.dates }}</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+    <style>
+       :root{
+         --header-color: #ffffff; /*behind logo and title */
+        --heading-color: #575b5c; /*section header "singing" "message" etc 33daff or 575b5c*/
+        --accent-color: #00aed6; /*icon row */
+        --highlight-color: #f5f5f5; /*every other row, this color should be pretty light*/
+        --pre-service-color: #e1ded6;/*colors of rows marked "pre service" and "post service" */
+      }
+      html {
+   				font-family: 'Roboto', sans-serif;
+                font-size: 10pt;
+                /* margin: 0px; */
+              	
+				}
+/* 
+        body{
+            margin: 10px;
+            padding: 20px;
+
+        } */
+    	table { width: 100%; }
+      	table#planTop { border: 0; border-collapse: collapse; }
+      	table#planTop tr { background-color:  var(--header-color)} /*HEADER COLOR*/
+      	.series { text-align: center;font-size: 30px}
+      	.title {font-weight: bold;}
+   		.plan {font-size: 20px;}
+    
+      	table#plan { width: 100%; border-collapse: collapse; margin-top:5px; }
+        table#plan th { background-color: var(--accent-color); color: white; font-size: 12pt; }/*VERY TOP TITLE BORDER*/
+        table#plan td { text-align: center; font-size: 10pt  }
+      	table#plan tr { page-break-inside: avoid; border: 0px solid black }  /*INSIDE BORDER*/
+        table#plan tbody, #plan thead { border: solid 0px black; }  /*OUTSIDE BORDER*/
+      	table#plan .element { text-align: left; font-size: 10pt; height: 28px; font-weight: bold; width: 20%;  }
+        table#plan .element pre { font-weight: normal; font-size: 8pt; }
+        table#plan .header { text-align: center; font-weight: bold; font-size: 10pt;  background-color:  var(--heading-color); border-top: 5px solid var(--accent-color); color: white; }/*SECTION TITLE*/
+        table#plan .preservice { background: var(--pre-service-color); } /*PRE SERVICE COLOR*/
+      table#plan .even { background-color: var(--highlight-color);}
+      table#plan .time { font-size: {{time_font_size}}; width: 55px; text-align: center; vertical-align: middle; }
+      table#plan .length { font-size: 12pt; width: 55px; text-align: center; vertical-align: middle; }
+      table#plan .description { font-size: 10pt; font-weight: normal !important;max-width:50px;word-wrap:break-word;  }
+      table#plan .footer { background-color: var(--accent-color); color: white; font-size: 9pt; }
+      
+      
+      table#notes { width: 100%; border-collapse: collapse; margin-top:5px; }
+      table#notes th { background-color: var(--highlight-color); color: black; font-size: 12pt; }/*Notes title*/
+
+      table#notes2 { width: 100%; border-collapse: collapse; margin-top:5px; }
+      table#notes2 th { background-color: var(--highlight-color); color: black; font-size: 12pt; }/*Notes title*/
+
+      table#plan .venues{
+          text-align:left;
+          }
+    
+      /*BEGIN CONTROL OF ROUNDED CELLS */
+     /*
+      table#plan tr td:first-child {
+              -moz-border-radius-topleft: 15px;
+              -moz-border-radius-bottomleft: 15px;
+              -webkit-border-top-left-radius: 15px;
+              -webkit-border-bottom-left-radius: 15px;
+
+          }
+
+       table#plan tr td:last-child {
+              -moz-border-radius-topright: 15px;
+              -moz-border-radius-bottomright: 15px;
+              -webkit-border-top-right-radius: 15px;
+              -webkit-border-bottom-right-radius: 15px;
+          }
+		/*END CONTROL OF ROUNDED CELLS */
+
+      table#planPeople { width: 100%; border-collapse: collapse; margin-top:5px; }
+      table#planPeople td { border-left: 1px solid  #e8e8e8;  }
+      table#planPeople .peopleHeader { background-color:var(--highlight-color); color:var(--accent-color); font-weight: bold; border-top: 2px solid var(--header-color)}
+      table#planPeople .categoryHeader { text-align: center; font-weight: bold; font-size: 10pt;  background-color: var(--header-color); color: black; border: 0px solid grey; }
+      
+      @media screen{	.alert-link,.alert-warning{font-family:"Lucida Sans Unicode","Lucida Grande",sans-serif;font-size:14pt;text-align:center}
+          		.alert {padding:15px;margin-bottom:20px;border:1px solid transparent;border-radius:10px}
+          		.alert-warning { background-color:#dd4f3f }
+  				.alert-box {background-color:#4a4a4a; font-family:"Lucida Sans Unicode","Lucida Grande",sans-serif;font-size:14pt;text-align:center}
+  				.alert-link{color:#fff;font-weight:700}
+        		.kbd {
+                    padding:0.1em 0.6em;
+                    border:1px solid #ccc;
+                    font-family:Arial,Helvetica,sans-serif;
+                    background-color:#f7f7f7;
+                    color:#333;
+                    -moz-box-shadow:0 1px 0px rgba(0, 0, 0, 0.2),0 0 0 2px #ffffff inset;
+                    -webkit-box-shadow:0 1px 0px rgba(0, 0, 0, 0.2),0 0 0 2px #ffffff inset;
+                    box-shadow:0 1px 0px rgba(0, 0, 0, 0.2),0 0 0 2px #ffffff inset;
+                    -moz-border-radius:3px;
+                    -webkit-border-radius:3px;
+                    border-radius:3px;
+                    display:inline-block;
+                    margin:0 0.1em;
+                    text-shadow:0 1px 0 #fff;
+                    white-space:nowrap;
+                    }
+        	}
+      @media print { 
+        @page{ 
+            size: 11in 8.5in; 
+        }
+           
+      
+        
+        .hidden-print{display:none!important}
+    	.headerRow { page-break-after: avoid !important;}
+        .dir {  column-count: 2;
+          		-webkit-column-count: 2;
+          		-moz-column-count: 2;        				
+        }
+        
+}
+      
+      </style>
+  </head>
+  <body>
+    
+    <table id="planTop">
+      <tr>
+      	<td><img src="{{organization.logo_thumbnail_url}}" height="100"></td>
+        <td width="100%">
+          <div class="series">
+            <span class="series title">{{ plan.series_title }}</span> | <span class="series date">{{ plan.dates }}</span>
+       		 <br><span class="series plan">  {{ plan.ministry.name }} - {{ plan.plan_title }}</span>
+            </div>
+        </td>
+        <td><img src="{{plan.series_artwork_url}}" height="100"></td>
+      </tr>
+    </table>
+    
+    <table id="plan">
+      <thead>	
+      <tr>
+          <th><i class="fas fa-hashtag"></i></th>
+          <th><i class="fas fa-clock"></i></th>
+          <th><i class="fas fa-stopwatch"></i></th>
+          <th style="text-align:left;">ITEM</th>
+          <th>{{notes_column_1_category | upcase }}</th>
+          <th>{{notes_column_2_category | upcase }}</th>
+          <th>{% if notes_column_3_category == 'Computer Graphics' %}CG{% else %}{{notes_column_3_category | upcase }}{% endif %} </th>
+          <th>{{notes_column_4_category | upcase }}</th>
+          <th>{{notes_column_5_category | upcase }}</th>
+          
+      
+      </tr>
+        </thead>
+      <tfoot>
+      	<tr>
+      <td class="footer" colspan="9"><i class="fas fa-hashtag"></i> - ITEM NUMBER  |  <i class="fas fa-clock"></i> - ITEM START TIME  |  <i class="fas fa-stopwatch"></i> -  ITEM DURATION</td>
+      </tr>
+      </tfoot>
+      <!-- {% increment item_counter %} -->
+      {% for item in plan.items %}
+      	{% case item.item_type %}
+            {% when 'Header' %}
+                <tr class="headerRow">
+                	<td colspan="9" class="header">{{ item.title }}</td>
+      			</tr>
+             {% else %}
+     
+      			<tr class="{% if item.is_preservice or item.is_postservice%}preservice{% else %}{% cycle 'odd', 'even' %}{% endif %}">
+                  <td width="1">{% if item.is_preservice or item.is_postservice%}{% else %}<b>{% increment item_counter %}&nbsp;&nbsp;</b>{% endif %}</td>
+                  <td class="time">{% for item_time in item.times %}{{ item_time.actual_time | date: '%l:%M%P' }}{% if forloop.last != true %}<hr style="margin:0;">{% else %}{% endif %} {% endfor %}</td>
+                  <td class="length">{{ item.length }}</td>
+                  <td class="element"> {% if item.song %}{{ item.title | prepend: '"' | append: '"'  }}{% else %}{{ item.title }}{% endif %}
+                    {% if item.description != '' %}<br><span class="description">
+                    {% if item.song %} {{ item.description}} <br><br> BPM:  {{item.arrangement.bpm}} <br> {% else %}{{ item.description}}{% endif %} </span>{% endif %}
+                </td>
+                  <!-- Break before other stuff -->
+                  <td>{% for note in item.notes %}{% if note.category_name == notes_column_1_category %}{{ note.note }}{% endif %}{% endfor %}</td>
+                  <td>{% for note in item.notes %}{% if note.category_name == notes_column_2_category %}{{ note.note }}{% endif %}{% endfor %}</td>
+                  <td>{% for note in item.notes %}{% if note.category_name == notes_column_3_category %}{{ note.note }}{% endif %}{% endfor %}</td>
+                  <td>{% for note in item.notes %}{% if note.category_name == notes_column_4_category %}{{ note.note }}{% endif %}{% endfor %}</td>
+                  <td class="venues">{% for note in item.notes %}{% if note.category_name == notes_column_5_category %}{{ note.note }}{% endif %}{% endfor %}</td>
+                  
+                  
+      			</tr>
+      	{% endcase %}
+      {% endfor %}
+        
+    </table>
+        <!-- BEGIN NOTES SECTION -->
+    <table id="notes">
+		<tr>
+         <th colspan="1" class="header">NOTES</th> 
+      	</tr>
+     	<tr> 
+        <td>
+          <br>
+          <br>
+          <br>
+    
+        </td> 
+    </tr>
+   </table>
+   <hr style="margin-top:0.25in; {% if crew_page_break == true %}page-break-before:always;{% endif %}">
+   <table id="notes2"><tr><th colspan="2">MICROPHONE STAGING</th></tr> <tr>  <th style="text-align: left;">Microphone</th> <th style="text-align: left;">Name - Service Start Location </th> </tr>
+
+        {% for note in plan.notes %}
+        {% if  {{note.category_name}} != 'Worship' && {{note.category_name}} != 'Worship 2'  && {{note.category_name}} != 'Production'  && {{note.category_name}} != 'Production 2'  && {{note.category_name}} != 'Guest Services'  && {{note.category_name}} != 'More' %}
+          <tr><td>{{note.category_name}}</td><td>{{note.note}}</td></tr> 
+          {% endif %}
+        {% endfor %}
+
+    </table>
+
+ 
+
+
+
+
+
+    <!-- BEGIN CREW SECTION -->
+    
+    
+    {% for category in crew_categories %}
+		{% for plan_category in plan.teams_with_times %}
+			{% if plan_category.name == category or all_categories == true %}
+       			{% for plan_person in plan.plan_people_not_declined %}					
+					{% if plan_person.category.name == plan_category.name %}
+       					{% assign crew_total = forloop.length %}
+       				{% endif %}
+    			 {% endfor%}
+       		{% endif %}
+       	{% endfor %}
+      {% endfor %}
+
+
+    <hr style="margin-top:0.25in; page-break-before:auto;">
+    CREW ({{ crew_total }} Total)
+   
+        <div class="dir" style="page-break-inside:auto;">   
+        <table id="planPeople">
+            <thead>
+            <tr class="peopleHeader">
+                <td>POSITION</td>
+                <td>NAME</td>
+                <td>CALL</td>
+            </tr>
+                </thead>
+            
+            <tbody>
+                    {% for category in crew_categories %}
+                        {% for plan_category in plan.teams_with_times %}
+                            {% if plan_category.name == category or all_categories == true %}
+                                <tr>
+                                    <th class="categoryHeader" colspan="3">{{ plan_category.name | upcase }}</th>
+                                </tr>
+            
+                                {% for plan_person in plan.plan_people_not_declined %}					
+                                    {% if plan_person.category.name == plan_category.name %}
+                                        <tr>
+                                            <td>{{ plan_person.position }}</td>	
+                                            <td>{{ plan_person.person.name }}</td>
+                                            <td>{% for time in plan.rehearsal_times %}{% if time.name == call_time_name %}{{ time.starts_at | date: '%l:%M%P' }}{% endif%}{% endfor %}</td>
+                                            </tr>
+                                    {% endif %}
+                                {% endfor %}
+                                
+                            {% endif %}
+                        {% endfor %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        
+            
+            </div>
+       <hr> 
+
+
+  </body>
+  
+</html>
+
+<!-- REV02.5 -->
